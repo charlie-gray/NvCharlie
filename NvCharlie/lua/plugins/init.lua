@@ -6,7 +6,7 @@ local default_plugins = {
 
   {
     "NvChad/base46",
-    branch = "v3.0",
+    branch = "v2.0",
     build = function()
       require("base46").load_all_highlights()
     end,
@@ -14,10 +14,18 @@ local default_plugins = {
 
   {
     "NvChad/ui",
-    branch = "v3.0",
+    branch = "v2.0",
     lazy = false,
-    config = function()
-      require "nvchad"
+  },
+
+  {
+    "NvChad/nvterm",
+    init = function()
+      require("core.utils").load_mappings "nvterm"
+    end,
+    config = function(_, opts)
+      require "base46.term"
+      require("nvterm").setup(opts)
     end,
   },
 
@@ -49,6 +57,7 @@ local default_plugins = {
 
   {
     "lukas-reineke/indent-blankline.nvim",
+    version = "2.20.7",
     init = function()
       require("core.utils").lazy_load "indent-blankline.nvim"
     end,
@@ -58,10 +67,7 @@ local default_plugins = {
     config = function(_, opts)
       require("core.utils").load_mappings "blankline"
       dofile(vim.g.base46_cache .. "blankline")
-
-      local hooks = require "ibl.hooks"
-      hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_space_indent_level)
-      require("ibl").setup(opts)
+      require("indent_blankline").setup(opts)
     end,
   },
 
@@ -77,7 +83,6 @@ local default_plugins = {
     end,
     config = function(_, opts)
       dofile(vim.g.base46_cache .. "syntax")
-      dofile(vim.g.base46_cache .. "treesitter")
       require("nvim-treesitter.configs").setup(opts)
     end,
   },
@@ -136,7 +141,7 @@ local default_plugins = {
       require("core.utils").lazy_load "nvim-lspconfig"
     end,
     config = function()
-      require("plugins.configs.lspconfig").defaults()
+      require "plugins.configs.lspconfig"
     end,
   },
 
@@ -247,7 +252,7 @@ local default_plugins = {
   -- Only load whichkey after all the gui
   {
     "folke/which-key.nvim",
-    keys = { "<leader>", "<c-r>", "<c-w>", '"', "'", "`", "c", "v", "g" },
+    keys = { "<leader>", "<c-r>", '"', "'", "`", "c", "v", "g" },
     init = function()
       require("core.utils").load_mappings "whichkey"
     end,
@@ -259,7 +264,7 @@ local default_plugins = {
   },
 }
 
-local config = require "nvconfig"
+local config = require("core.utils").load_config()
 
 if #config.plugins > 0 then
   table.insert(default_plugins, { import = config.plugins })

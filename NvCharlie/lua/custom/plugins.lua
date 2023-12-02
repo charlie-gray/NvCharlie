@@ -4,19 +4,7 @@ local overrides = require("custom.configs.overrides")
 local plugins = {
 
   -- Override plugin definition options
-{
-    "mfussenegger/nvim-dap-python",
-    ft = "python",
-    dependencies = {
-      "mfussenegger/nvim-dap",
-      "rcarriga/nvim-dap-ui",
-    },
-    config = function(_, opts)
-      local path = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
-      require("dap-python").setup(path)
-      require("core.utils").load_mappings("dap_python")
-    end,
-  },
+
   {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -38,8 +26,8 @@ local plugins = {
   keys = {
     { "]h", function() require("notebook-navigator").move_cell "d" end },
     { "[h", function() require("notebook-navigator").move_cell "u" end },
-    { "<leader>cX", "<cmd>lua require('notebook-navigator').run_cell()<cr>" },
-    { "<leader>cx", "<cmd>lua require('notebook-navigator').run_and_move()<cr>" },
+    { "<leader>X", "<cmd>lua require('notebook-navigator').run_cell()<cr>" },
+    { "<leader>x", "<cmd>lua require('notebook-navigator').run_and_move()<cr>" },
   },
   dependencies = {
     "echasnovski/mini.comment",
@@ -95,15 +83,10 @@ local plugins = {
     opts = {
         overrides.mason,
         ensure_installed = {
-        "black",
-        "debugpy",
-        "mypy",
-        "ruff",
-        "pyright",
-        "clangd",
-        "clang-format",
-        "codelldb",
-        "OmniSharp"
+          "clangd",
+          "clang-format",
+          "codelldb",
+          "OmniSharp"
       }
     }
   },
